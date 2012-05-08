@@ -1,4 +1,4 @@
-﻿package inn.nowri.ka.rgbanime.core 
+﻿package inn.nowri.ka.rgbeffect.core 
 {
 	import flash.geom.Point;
 	import flash.display.PixelSnapping;

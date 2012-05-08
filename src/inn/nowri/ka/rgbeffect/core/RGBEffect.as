@@ -1,6 +1,6 @@
-﻿package inn.nowri.ka.rgbanime.core 
+﻿package inn.nowri.ka.rgbeffect.core 
 {
-	import inn.nowri.ka.rgbanime.ext.ImageUtil;
+	import inn.nowri.ka.rgbeffect.ext.ImageUtil;
 	import flash.display.BitmapData;
 	public class RGBEffect 
 	{

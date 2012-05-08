@@ -1,16 +1,17 @@
-﻿package inn.nowri.ka.rgbanime.type 
+﻿package inn.nowri.ka.rgbeffect.type 
 {
-	import flash.events.Event;
+	import inn.nowri.ka.rgbeffect.core.IControlAnime;
+	import inn.nowri.ka.rgbeffect.core.RGBCommandConstants;
+	import inn.nowri.ka.rgbeffect.core.RGBConstants;
+	import inn.nowri.ka.rgbeffect.core.RGBControlObject;
 
-	import inn.nowri.ka.rgbanime.core.RGBConstants;
+	import org.libspark.betweenas3.BetweenAS3;
 	import org.libspark.betweenas3.easing.Sine;
 	import org.libspark.betweenas3.tweens.ITween;
-	import org.libspark.betweenas3.BetweenAS3;
-	import inn.nowri.ka.rgbanime.core.RGBCommandConstants;
-	import inn.nowri.ka.rgbanime.core.IControlAnime;
-	import inn.nowri.ka.rgbanime.core.RGBControlObject;
-	import flash.display.BitmapData;
+
 	import flash.display.Bitmap;
+	import flash.display.BitmapData;
+	import flash.events.Event;
 	
 	public class OneDirection extends RGBControlObject implements IControlAnime
 	{	

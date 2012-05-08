@@ -23,8 +23,8 @@ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
 
-*/
-package inn.nowri.ka.rgbanime.ext 
+ */
+package inn.nowri.ka.rgbeffect.ext 
 {
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;

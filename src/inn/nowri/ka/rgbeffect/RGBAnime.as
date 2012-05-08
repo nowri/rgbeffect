@@ -1,12 +1,16 @@
-﻿package inn.nowri.ka.rgbanime 
+﻿package inn.nowri.ka.rgbeffect 
 {
-	import inn.nowri.ka.rgbanime.type.*;
+	import inn.nowri.ka.rgbeffect.type.FromEachEnd;
+	import inn.nowri.ka.rgbeffect.type.OneDirection;
+	import inn.nowri.ka.rgbeffect.type.Yoyo;
+
 	import flash.display.BitmapData;
 	
 	/**
 	 * RGBAnime Class 
 	 * 
-	 * @version 1.11
+	 * @version 1.5
+	 * @update  2012/05/08 ver.1.5 パッケージ名変更
 	 * @update  2010/05/28 ver.1.11
 	 * @update  2010/05/27 ver.1.1 再生終了時onCompleteのdispatch追加
 	 * @update  2010/05/25 ver.1.02
@@ -72,6 +76,11 @@
 		public static function oneDirection(bmd:BitmapData, obj:Object, isFillin:Boolean= false) : OneDirection
 		{
 			return new OneDirection(bmd,obj,isFillin);
+		}
+		
+		public static function fromEachEnd(bmd:BitmapData, obj:Object) : FromEachEnd
+		{
+			return new FromEachEnd(bmd,obj);
 		}
 		
 	}
