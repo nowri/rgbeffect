@@ -118,20 +118,20 @@
 		}
 
 		
-//		// getter
-//		public function get r() : Bitmap
-//		{
-//			return _r;
-//		}
-//		
-//		public function get g() : Bitmap
-//		{
-//			return _g;
-//		}
-//		
-//		public function get b() : Bitmap
-//		{
-//			return _b;
-//		}
+		// getter
+		public function get r() : Bitmap
+		{
+			return _r;
+		}
+		
+		public function get g() : Bitmap
+		{
+			return _g;
+		}
+		
+		public function get b() : Bitmap
+		{
+			return _b;
+		}
 	}
 }

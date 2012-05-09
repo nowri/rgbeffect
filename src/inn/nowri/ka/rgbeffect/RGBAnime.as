@@ -9,7 +9,8 @@
 	/**
 	 * RGBAnime Class 
 	 * 
-	 * @version 1.5
+	 * @version 1.6
+	 * @update  2012/05/09 ver.1.6
 	 * @update  2012/05/08 ver.1.5 パッケージ名変更
 	 * @update  2010/05/28 ver.1.11
 	 * @update  2010/05/27 ver.1.1 再生終了時onCompleteのdispatch追加
@@ -18,7 +19,7 @@
 	 * @update  2010/05/09 ver.1.0
 	 * @update  2010/05/07 ver.0.1
 	 * @date	2010/05/07
-	 * @author	n0wri.ka
+	 * @author	nowri.ka
 	 */
 	public class RGBAnime 
 	{

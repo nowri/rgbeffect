@@ -2,7 +2,6 @@
 {
 	import inn.nowri.ka.rgbeffect.core.IControlAnime;
 	import inn.nowri.ka.rgbeffect.core.RGBCommandConstants;
-	import inn.nowri.ka.rgbeffect.core.RGBConstants;
 	import inn.nowri.ka.rgbeffect.core.RGBControlObject;
 
 	import org.libspark.betweenas3.BetweenAS3;
@@ -15,26 +14,54 @@
 	
 	public class OneDirection extends RGBControlObject implements IControlAnime
 	{	
+		/**
+		 * 方向
+		 */
+		public static const LEFT:String = "LEFT";
+		/**
+		 * 方向
+		 */
+		public static const RIGHT:String = "RIGHT";
+		/**
+		 * 方向
+		 */
+		public static const UP:String = "UP";
+		/**
+		 * 方向
+		 */
+		public static const DOWN:String = "DOWN";
+		
+		/**
+		 * Fillinの動く量がパラメータmaxに対してどれくらいの割合か
+		 */
+		public static const FILLIN_MOVE_VALUE:Number = 0.3;
+		
+		/**
+		 * Fillinの振幅時間がパラメータmaxに対してどれくらいの割合か
+		 */
+		public static const FILLIN_MOVE_TIME:Number = 0.5;
+
 		private var _isFillin:Boolean;
+		private var delay : Number = 0.2;
+		private var time : Number = 1;
+		private var count : uint = 1;
+		
+		private var direction : String;
+		private var max : Number = 10;
 		
 		public function OneDirection(bmd:BitmapData, obj:Object, isFillin:Boolean)
 		{
 			super(bmd, obj);
-			
-//			count = (obj.count != undefined) ? obj.count : count;
-			_isFillin = isFillin;
-		//	trace(obj.isFillIn);
-//			direction =(obj.direction == "")? RGBCommandConstants.LEFT : obj.direction;
-//			random=(!obj.random)? 0 : obj.random;
-//			max=(!obj.max)? 100 : obj.max;
-//			time=(!obj.time)? 0.2 : obj.time;
-//			delay=(!obj.delay)? 0.1 : obj.delay;
+			count = (obj.count != undefined) ? obj.count : count;
+			time=(obj.time)? 	obj.time:time;
+			delay=(obj.delay)?	obj.delay:delay;
+			direction = (obj.direction != undefined)? obj.direction.toUpperCase() : LEFT;
+			max = (obj.max != undefined)? obj.max : max;
 		}
 		
 		override public function play() : void
 		{
 			if(_isDestroyed!=1)return;
-			
 			_isPlaying = true;
 			var obj1:Object = getTweenParamVct()[0];
 			var obj2:Object = getTweenParamVct()[1];
@@ -101,28 +128,28 @@
 			var obj4:Object;
 			switch(direction)
 			{
-				case RGBCommandConstants.LEFT:
+				case LEFT:
 					obj3={x:basePosition.x};
-					obj4={x:basePosition.x-getRandomValue(max)*RGBConstants.FILLIN_MOVE_VALUE};
+					obj4={x:basePosition.x-getRandomValue(max)*FILLIN_MOVE_VALUE};
 					break;
 				
-				case RGBCommandConstants.RIGHT:
+				case RIGHT:
 					obj3={x:basePosition.x};
-					obj4={x:basePosition.x+getRandomValue(max)*RGBConstants.FILLIN_MOVE_VALUE};
+					obj4={x:basePosition.x+getRandomValue(max)*FILLIN_MOVE_VALUE};
 				break;
 				
-				case RGBCommandConstants.UP:
+				case UP:
 					obj3={y:basePosition.y};
-					obj4={y:basePosition.y-getRandomValue(max)*RGBConstants.FILLIN_MOVE_VALUE};
+					obj4={y:basePosition.y-getRandomValue(max)*FILLIN_MOVE_VALUE};
 				break;
 				
-				case RGBCommandConstants.DOWN:
+				case DOWN:
 					obj3={y:basePosition.y};
-					obj4={y:basePosition.y+getRandomValue(max)*RGBConstants.FILLIN_MOVE_VALUE};
+					obj4={y:basePosition.y+getRandomValue(max)*FILLIN_MOVE_VALUE};
 				break;
 			};
 			
-			var _time:Number = time*RGBConstants.FILLIN_MOVE_TIME;
+			var _time:Number = time*FILLIN_MOVE_TIME;
 			return BetweenAS3.serial(
 				BetweenAS3.tween(bmp, obj4, obj3, _time, Sine.easeInOut),
 				BetweenAS3.tween(bmp, obj3, obj4, _time, Sine.easeInOut),
@@ -137,22 +164,22 @@
 			var obj2:Object;
 			switch(direction)
 			{
-				case RGBCommandConstants.LEFT:
+				case LEFT:
 					obj1={x:basePosition.x};
 					obj2={x:basePosition.x-getRandomValue(max)};
 				break;
 				
-				case RGBCommandConstants.RIGHT:
+				case RIGHT:
 					obj1={x:basePosition.x};
 					obj2={x:basePosition.x+getRandomValue(max)};
 				break;
 				
-				case RGBCommandConstants.UP:
+				case UP:
 					obj1={y:basePosition.y};
 					obj2={y:basePosition.y-getRandomValue(max)};
 				break;
 				
-				case RGBCommandConstants.DOWN:
+				case DOWN:
 					obj1={y:basePosition.y};
 					obj2={y:basePosition.y+getRandomValue(max)};
 				break;

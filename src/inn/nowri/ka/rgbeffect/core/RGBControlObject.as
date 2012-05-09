@@ -9,7 +9,6 @@
 
 	/**
 	 * RGBControlObject Class 
-	 * 
 	 */
 	public class RGBControlObject extends RGBObject implements IControlAnime
 	{
@@ -22,43 +21,21 @@
 		protected var _isDestroyed : uint = 1;
 		
 		// 引数 -------------------------------------------
-		protected var time : Number = 1;
-		protected var max : Number = 10;
-		protected var delay : Number = 0.2;
-		protected var isFlick : Boolean = true;
-		protected var random : Number = 0.5;
 		protected var blend : uint = 0;
-		protected var direction : String;
-		protected var count : uint = 1;
+		protected var isFlick : Boolean = true;
 		// 引数 -------------------------------------------
 		protected var _isPlaying:Boolean =false;
-	//	protected var onComplete : Function;
-	//	protected var onCompleteParams:Array;
 		private var ftween : ITween;		
 		private var targetFlickMc : DisplayObject;
 		private var targetFlickScaleMc : DisplayObject;
-		
-		
-		//private var isScale : Boolean;
-		
+		private var random : Number = 0.5;
 		public function RGBControlObject(bmd : BitmapData, obj : Object)
 		{
 			super(bmd);
-			time = (obj.time != undefined) ? obj.time : time;
-			count = (obj.count != undefined)? obj.count : count;
-			if(count == 0)
-			{
-				count = 4294967295;
-			};
-			max = (obj.max != undefined)? obj.max : max;
-			delay = (obj.delay != undefined)? obj.delay : delay;
-			direction = (obj.direction != undefined)? obj.direction.toUpperCase() : "";
-			random = (obj.random != undefined)? obj.random : random;
-			isFlick = (obj.isFlick != undefined)? obj.isFlick : isFlick;
 			blend = (obj.blend != undefined)? obj.blend : blend;
 			if(blend != 0)setBlendMode();
-			
-			
+			isFlick = (obj.isFlick != undefined)? obj.isFlick : isFlick;
+			random = (obj.random != undefined)? obj.random : random;
 		}
 		
 		/**
@@ -183,20 +160,7 @@
 				_r.visible=_g.visible=_b.visible=true;
 			}
 		}
-		//		private function getFlickRandomValue() : Number 
-		//		{	
-		//			var val:Number = RGBConstants.FLICK_INTERVAL;
-		//			var _val:Number;
-		//			if(Math.random() <= RGBConstants.FLICK_RANDOM_VALUE)
-		//			{
-		//				_val = val + val * Math.random()*RGBConstants.FLICK_MAX_RANDOM_VALUE;
-		//			}
-		//			else
-		//			{
-		//				_val = val;
-		//			};
-		//			return _val;
-		//		}
+
 
 		private function getFlickRandomBool() : Boolean 
 		{	
@@ -237,23 +201,13 @@
 				if(targetFlickMc.visible)
 				{
 					targetFlickMc = getChildAt(int(Math.random() * 3));
-					//	targetFlickMc.scaleX = Math.random()+1
 					if(getFlickRandomBool())targetFlickMc.visible = false;
 				}
 				else
 				{
 					targetFlickMc.visible = true;
 				}
-//				if(!isScale)
-//				{
-//					targetFlickScaleMc = getChildAt(int(Math.random() * 3));
-//					if(getFlickRandomBool())scaleMe(targetFlickScaleMc,Math.random() + 1,Math.random() + 1);isScale=true;
-//				}
-//				else
-//				{
-//					scaleMe(targetFlickScaleMc, 1,1);
-//					isScale =false;
-//				};
+
 				setFlick();
 			};
 		}
@@ -278,16 +232,5 @@
 			
 		}
 
-//		private function scaleMe(target : DisplayObject, sx : Number, sy : Number):void
-//		{
-//			var mat:Matrix = target.transform.matrix;
-//			mat.translate(target.width/2, target.height/2);
-//			mat.scale(sx, sy);
-//		//	var mat_sx : Number = MatrixTransformer.getScaleX(mat);
-//		//	var mat_sy : Number = MatrixTransformer.getScaleY(mat
-//		//	MatrixTransformer.setScaleX(mat, sx);
-//		//	MatrixTransformer.setScaleY(mat, sy);
-//		//	target.transform.matrix = mat;
-//		}
 	}
 }

@@ -2,7 +2,6 @@
 {
 	import inn.nowri.ka.rgbeffect.core.IControlAnime;
 	import inn.nowri.ka.rgbeffect.core.RGBCommandConstants;
-	import inn.nowri.ka.rgbeffect.core.RGBConstants;
 	import inn.nowri.ka.rgbeffect.core.RGBControlObject;
 
 	import org.libspark.betweenas3.BetweenAS3;
@@ -17,15 +16,49 @@
 	
 	public class Yoyo extends RGBControlObject implements IControlAnime
 	{	
+		/**
+		 * 方向
+		 */
+		public static const UP_DOWN:String = "UP_DOWN";
+		/**
+		 * 方向
+		 */
+		public static const RIGHT_LEFT:String = "RIGHT_LEFT";
+		/**
+		 * 方向
+		 */
+		public static const ALL:String = "ALL";
+		
+		
+		/**
+		 * 方向 ALLの場合の実行されるしきい値
+		 */
+		public static const ALL_SHOW_THRESHOLD:Number = 0.7;
+		
 		private var betweenAS3ObjVct : Vector.<Object>;
 		private var tweengAr : Vector.<ITween>;
 		private var innerCountForPlayChaos : uint;
+		private var time : Number = 0.1;
+		private var max : Number = 1;
+		private var delay : Number = 0.2;
+		private var direction : String;
+		private var count : uint = 0;
+		
 	
 		public function Yoyo(bmd : BitmapData, obj:Object)
 		{
 			super(bmd, obj);
+			time = (obj.time != undefined) ? obj.time : time;
+			count = (obj.count != undefined)? obj.count : count;
+			if(count == 0)
+			{
+				count = 4294967295;
+			};
+			max = (obj.max != undefined)? obj.max : max;
+			delay = (obj.delay != undefined)? obj.delay : delay;
+			direction = (obj.direction != undefined)? obj.direction.toUpperCase() : ALL;
 			count = (count != 4294967295)? obj.count : count;
-			direction =(direction=="")? RGBCommandConstants.ALL : direction;
+			direction =(direction=="")? ALL : direction;
 			tweengAr = new Vector.<ITween>(3,false);
 			
 		}
@@ -37,15 +70,15 @@
 			
 			switch(direction)
 			{
-				case RGBCommandConstants.UP_DOWN:
+				case UP_DOWN:
 					if(_isPlaying)playLinear();
 				break;
 				
-				case RGBCommandConstants.RIGHT_LEFT:
+				case RIGHT_LEFT:
 					if(_isPlaying)playLinear();
 				break;
 				
-				case RGBCommandConstants.ALL:
+				case ALL:
 					innerCountForPlayChaos = count;
 					if(_isPlaying)playChaos();
 				break;
@@ -85,7 +118,7 @@
 			
 			var __time:Number =(_time)? _time:time;
 			
-			if(direction==RGBCommandConstants.ALL || time>=__time)
+			if(direction==ALL || time>=__time)
 			{
 				if(tweengAr[0])tweengAr[0].stop();
 				if(tweengAr[1])tweengAr[1].stop();
@@ -214,17 +247,17 @@
 			var obj2:Object;
 			switch(direction)
 			{
-				case RGBCommandConstants.UP_DOWN:
+				case UP_DOWN:
 					obj1={y:basePosition.y};
 					obj2={y:basePosition.y+getRandomValue(max)};
 				break;
 				
-				case RGBCommandConstants.RIGHT_LEFT:
+				case RIGHT_LEFT:
 					obj1={x:basePosition.x};
 					obj2={x:basePosition.x+getRandomValue(max)};
 				break;
 				
-				case RGBCommandConstants.ALL:
+				case ALL:
 					var pt:Point = getPoint(getRandomValue(max), new Point(basePosition.x, basePosition.y), int(Math.random()*360));
 					obj1={x:basePosition.x,y:basePosition.y};
 					obj2={x:pt.x,y:pt.y};
@@ -260,7 +293,7 @@
 		{
 			if(innerCountForPlayChaos!=0)
 			{
-				if(Math.random()<RGBConstants.ALL_SHOW_THRESHOLD)
+				if(Math.random()<ALL_SHOW_THRESHOLD)
 				{
 					innerCountForPlayChaos--;
 					if(tweengAr[2])tweengAr[2].stop();
