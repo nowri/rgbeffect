@@ -1,5 +1,6 @@
 ﻿package inn.nowri.ka.rgbeffect.core 
 {
+	import flash.display.Sprite;
 	import flash.display.BlendMode;
 	import flash.display.DisplayObject;
 	import flash.display.BitmapData;
@@ -13,25 +14,31 @@
 	public class RGBControlObject extends RGBObject implements IControlAnime
 	{
 		public var flickTimer : Number;
-		
-		protected var rtween : ITween;
-		protected var gtween : ITween;
-		protected var btween : ITween;
+		protected var rTween : ITween;
+		protected var gTween : ITween;
+		protected var bTween : ITween;
 		protected var tweeng : ITween;
 		protected var _isDestroyed : uint = 1;
+		protected var rgb : Vector.<Sprite> = Vector.<Sprite>([
+			new Sprite(),
+			new Sprite(),
+			new Sprite()
+		]);
 		
 		// 引数 -------------------------------------------
 		protected var blend : uint = 0;
 		protected var isFlick : Boolean = true;
 		// 引数 -------------------------------------------
 		protected var _isPlaying:Boolean =false;
-		private var ftween : ITween;		
+		private var _basePosition:Point;
+		private var fTween : ITween;		
 		private var targetFlickMc : DisplayObject;
 		private var targetFlickScaleMc : DisplayObject;
 		private var random : Number = 0.5;
 		public function RGBControlObject(bmd : BitmapData, obj : Object)
 		{
 			super(bmd);
+			_basePosition = getBasePosition();
 			blend = (obj.blend != undefined)? obj.blend : blend;
 			if(blend != 0)setBlendMode();
 			isFlick = (obj.isFlick != undefined)? obj.isFlick : isFlick;
@@ -56,6 +63,7 @@
 			if(_isDestroyed!=1)return;
 			
 			tweeng.togglePause();
+			
 			if(isFlick)controlFlick(tweeng.isPlaying);
 		}
 		/**
@@ -123,8 +131,6 @@
 			return _isDestroyed;
 		}
 		
-		
-				
 		final protected function getPoint(radius : uint, point : Point, angle : Number) : Point
 		{
 			var radian : Number = angle * Math.PI / 180;
@@ -153,14 +159,37 @@
 			}
 			else
 			{
-				if(ftween)
+				if(fTween)
 				{
-					ftween.stop();
+					fTween.stop();
 				}
 				_r.visible=_g.visible=_b.visible=true;
 			}
 		}
-
+		
+		final protected function get basePosition() : Point
+		{
+			return _basePosition;
+		}
+		
+		final override protected function addChildFunc() : void 
+		{	
+			var ar:Array = [_r,_g,_b];
+			var len:uint = ar.length;
+			for(var i:uint=0; i<len; i++)
+			{
+				var targetNum:int = int(Math.random()*(len - i));
+				addChild(rgb[i]);
+				rgb[i].addChild(ar[targetNum]);
+				_basePosition = getBasePosition();
+				ar[targetNum].x = _basePosition.x;
+				ar[targetNum].y = _basePosition.y;
+				_basePosition = new Point(-_basePosition.x, -_basePosition.y);
+				rgb[i].x = _basePosition.x;
+				rgb[i].y = _basePosition.y;
+				ar.splice(targetNum,1);
+			};
+		}
 
 		private function getFlickRandomBool() : Boolean 
 		{	
@@ -179,9 +208,9 @@
 		private function setFlick() : void 
 		{
 			flickTimer = 0;
-			ftween = BetweenAS3.tween(this, {flickTimer:1}, null, RGBConstants.FLICK_INTERVAL);
-			if(_isPlaying)ftween.onComplete = completeFlick;
-			ftween.play();
+			fTween = BetweenAS3.tween(this, {flickTimer:1}, null, RGBConstants.FLICK_INTERVAL);
+			if(_isPlaying)fTween.onComplete = completeFlick;
+			fTween.play();
 		}
 		
 		private function completeFlick():void
@@ -211,26 +240,32 @@
 				setFlick();
 			};
 		}
+		
+		private function getBasePosition() : Point 
+		{
+			var bool:Boolean = RGBConstants.BASE_ALIGN=="";
+			var xx:Number = (bool)? -_bmd.width/2 : 0;
+			var yy:Number = (bool)? -_bmd.height/2 : 0;
+			return new Point(xx, yy);
+		}
 
 		private function setBlendMode() : void 
 		{
 			switch(blend)
 			{
 				case 0:
-					_r.blendMode = _g.blendMode = _b.blendMode = BlendMode.MULTIPLY;
+					rgb[0].blendMode = rgb[1].blendMode = rgb[2].blendMode = BlendMode.MULTIPLY;
 					getChildAt(0).blendMode=BlendMode.NORMAL;
 				break;
 				
 				case 1: 
-					_r.blendMode = _g.blendMode = _b.blendMode = BlendMode.MULTIPLY;
+					rgb[0].blendMode = rgb[1].blendMode = rgb[2].blendMode = BlendMode.MULTIPLY;
 				break;
 				
 				case 2: 
-					_r.blendMode = _g.blendMode = _b.blendMode = BlendMode.DIFFERENCE;
+					rgb[0].blendMode = rgb[1].blendMode = rgb[2].blendMode = BlendMode.DIFFERENCE;
 				break;
 			}
-			
 		}
-
 	}
 }

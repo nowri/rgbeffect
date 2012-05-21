@@ -1,7 +1,8 @@
 ﻿package inn.nowri.ka.rgbeffect.type 
 {
+	import flash.display.Sprite;
+	import inn.nowri.ka.rgbeffect.core.RGBEvent;
 	import inn.nowri.ka.rgbeffect.core.IControlAnime;
-	import inn.nowri.ka.rgbeffect.core.RGBCommandConstants;
 	import inn.nowri.ka.rgbeffect.core.RGBControlObject;
 
 	import org.libspark.betweenas3.BetweenAS3;
@@ -9,9 +10,7 @@
 	import org.libspark.betweenas3.tweens.ITween;
 	import org.libspark.betweenas3.tweens.ITweenGroup;
 
-	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.events.Event;
 	import flash.geom.Point;
 	
 	public class Yoyo extends RGBControlObject implements IControlAnime
@@ -123,13 +122,13 @@
 				if(tweengAr[0])tweengAr[0].stop();
 				if(tweengAr[1])tweengAr[1].stop();
 				if(tweengAr[2])tweengAr[2].stop();
-				tweengAr[0] = BetweenAS3.tween( _r, {x:basePosition.x, y:basePosition.y}, null, __time);
-				tweengAr[1] = BetweenAS3.tween( _g, {x:basePosition.x, y:basePosition.y}, null, __time);
-				tweengAr[2] = BetweenAS3.tween( _b, {x:basePosition.x, y:basePosition.y}, null, __time);
+				tweengAr[0] = BetweenAS3.tween( rgb[0], {x:0, y:0}, null, __time);
+				tweengAr[1] = BetweenAS3.tween( rgb[1], {x:0, y:0}, null, __time);
+				tweengAr[2] = BetweenAS3.tween( rgb[2], {x:0, y:0}, null, __time);
 				
 				ITween(tweengAr[2]).onComplete = function():void
 				{				
-					dispatchEvent(new Event(RGBCommandConstants.PLAY_COMPLETE));
+					dispatchEvent(new RGBEvent(RGBEvent.PLAY_COMPLETE));
 				};
 				
 				tweengAr[0].play();
@@ -152,8 +151,8 @@
 				var xy:String;
 				ITween(tweengAr[0]).onUpdate = function():void
 				{
-					if(maxX<_r.x)maxX=_r.x;
-					if(maxY<_r.y)maxY=_r.y;
+					if(maxX<rgb[0].x)maxX=rgb[0].x;
+					if(maxY<rgb[0].y)maxY=rgb[0].y;
 				};
 				
 				ITween(tweengAr[0]).onComplete = function():void
@@ -169,19 +168,19 @@
 						xy="x";
 						_max = maxX-basePosition.x;
 					}			
-					stopToDefaultPartTremolo(_r, tweengAr[0], _count, _count, _max, xy);
+					stopToDefaultPartTremolo(rgb[0], tweengAr[0], _count, _count, _max, xy);
 				};
 				
 				ITween(tweengAr[1]).onComplete = function():void
 				{				
-					stopToDefaultPartTremolo(_g, tweengAr[1], _count, _count, _max, xy);
+					stopToDefaultPartTremolo(rgb[1], tweengAr[1], _count, _count, _max, xy);
 				};
 				
 				ITween(tweengAr[2]).onComplete = function():void
 				{				
-					stopToDefaultPartTremolo(_b, tweengAr[2], _count, _count, _max, xy);
+					stopToDefaultPartTremolo(rgb[2], tweengAr[2], _count, _count, _max, xy);
 					if(isFlick)controlFlick(false);
-					dispatchEvent(new Event(RGBCommandConstants.PLAY_COMPLETE));
+					dispatchEvent(new RGBEvent(RGBEvent.PLAY_COMPLETE));
 				};
 				tweengAr[1] = BetweenAS3.delay(tweengAr[1],delay*2);
 				tweengAr[2] = BetweenAS3.delay(tweengAr[2],delay*4);
@@ -204,7 +203,7 @@
 			if(isFlick)controlFlick(false);
 		}
 		
-		private function stopToDefaultPartTremolo(bmp:Bitmap, tween : ITween, __count : uint, _countMax:uint, _max : Number, xy : String) : void 
+		private function stopToDefaultPartTremolo(spr:Sprite, tween : ITween, __count : uint, _countMax:uint, _max : Number, xy : String) : void 
 		{
 			var obj1:Object = {};
 			obj1[xy] = -_max/2+basePosition[xy];
@@ -214,15 +213,15 @@
 			
 			tween = BetweenAS3.serial
 			(
-				BetweenAS3.tween(bmp, obj1, null, time, Sine.easeInOut),
-				BetweenAS3.tween(bmp, obj2, null, time, Sine.easeInOut)
+				BetweenAS3.tween(spr, obj1, null, time, Sine.easeInOut),
+				BetweenAS3.tween(spr, obj2, null, time, Sine.easeInOut)
 			);
 			
 			if(__count != 0 && !_isPlaying)tween.onComplete = function():void
 			{
 				var _count:uint = __count-1;
 				_max = _max * _count/_countMax;
-				stopToDefaultPartTremolo(bmp, tween, _count, _countMax, _max, xy);
+				stopToDefaultPartTremolo(spr, tween, _count, _countMax, _max, xy);
 			};
 			tween.play();
 		}
@@ -230,9 +229,9 @@
 		private function renderTweenGroup():Vector.<ITween>
 		{
 			betweenAS3ObjVct = getTweenParamVct();
-			var rtweeng:ITweenGroup = renderPart(_r);
-			var gtweeng:ITweenGroup = renderPart(_g);
-			var btweeng:ITweenGroup = renderPart(_b);
+			var rtweeng:ITweenGroup = renderPart(rgb[0]);
+			var gtweeng:ITweenGroup = renderPart(rgb[1]);
+			var btweeng:ITweenGroup = renderPart(rgb[2]);
 			var tweeng:Vector.<ITween> = new Vector.<ITween>(3,false);
 			tweeng[0] = rtweeng;
 			tweeng[1] = gtweeng;
@@ -248,18 +247,23 @@
 			switch(direction)
 			{
 				case UP_DOWN:
-					obj1={y:basePosition.y};
-					obj2={y:basePosition.y+getRandomValue(max)};
+					obj1={y:-basePosition.y};
+					obj2={y:-basePosition.y+getRandomValue(max)};
 				break;
 				
 				case RIGHT_LEFT:
-					obj1={x:basePosition.x};
-					obj2={x:basePosition.x+getRandomValue(max)};
+					obj1={x:-basePosition.x};
+					obj2={x:-basePosition.x+getRandomValue(max)};
 				break;
 				
 				case ALL:
-					var pt:Point = getPoint(getRandomValue(max), new Point(basePosition.x, basePosition.y), int(Math.random()*360));
-					obj1={x:basePosition.x,y:basePosition.y};
+					var pt:Point = getPoint
+					(
+						getRandomValue(max), 
+						new Point(-basePosition.x, -basePosition.y), 
+						int(Math.random()*360)
+					);
+					obj1={x:-basePosition.x,y:-basePosition.y};
 					obj2={x:pt.x,y:pt.y};
 				break;
 			}
@@ -268,23 +272,23 @@
 			return vct;
 		}
 		
-		private function renderPart(bmp:Bitmap) : ITweenGroup 
+		private function renderPart(spr:Sprite) : ITweenGroup 
 		{
 			var tween:ITween;
-			if(bmp === _r )
+			if(spr === rgb[0] )
 			{
-				tween = rtween;
+				tween = rTween;
 			}
-			else if(bmp === _g)
+			else if(spr === rgb[1])
 			{
-				tween = gtween;
+				tween = gTween;
 			}
-			else if(bmp === _b)
+			else if(spr === rgb[2])
 			{
-				tween = btween;
+				tween = bTween;
 			};
-			tween = BetweenAS3.tween(bmp, betweenAS3ObjVct[1], betweenAS3ObjVct[0], time, Sine.easeInOut);
-			var tween2:ITween = BetweenAS3.tween(bmp, betweenAS3ObjVct[0], betweenAS3ObjVct[1], time, Sine.easeInOut);
+			tween = BetweenAS3.tween(spr, betweenAS3ObjVct[1], betweenAS3ObjVct[0], time, Sine.easeInOut);
+			var tween2:ITween = BetweenAS3.tween(spr, betweenAS3ObjVct[0], betweenAS3ObjVct[1], time, Sine.easeInOut);
 			var tweeng:ITweenGroup = BetweenAS3.serial(tween,tween2);
 			return tweeng;
 		}

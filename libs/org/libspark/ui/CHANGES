@@ -1,0 +1,28 @@
+SWFWheel Changelog
+==================
+
+This file lists the major changes between the SWFWheel releases.
+
+
+SWFWheel 1.5
+------------
+
+Release date yet unknown
+
+- Flash player 10.1 support.
+- Enable switch browser scroll. default is true.
+
+SWFWheel 1.1
+------------
+
+Bugfix release. Released April 14th 2009
+
+- Add AC_RunActiveContent.js support. (flash default)
+
+
+SWFWheel 1.0
+------------
+
+Released December 21th 2008
+
+- initial release

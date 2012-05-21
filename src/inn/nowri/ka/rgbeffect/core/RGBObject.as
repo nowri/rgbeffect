@@ -1,6 +1,5 @@
 ﻿package inn.nowri.ka.rgbeffect.core 
 {
-	import flash.geom.Point;
 	import flash.display.PixelSnapping;
 	import flash.display.BlendMode;
 	import flash.display.BitmapData;
@@ -11,9 +10,9 @@
 	 * RGBObject Class 
 	 * 
 	 */
-	class RGBObject extends Sprite
+	public class RGBObject extends Sprite
 	{
-		private var _basePosition:Point;
+		
 		
 		protected var _r : Bitmap;
 		protected var _g : Bitmap;
@@ -24,8 +23,7 @@
 		public function RGBObject(bmd : BitmapData)
 		{
 			_bmd = bmd;
-			_basePosition = getBasePosition();
-
+			
 			var vct:Vector.<BitmapData> = RGBEffect.getRGB(_bmd);
 			_r = new Bitmap(vct[0]);
 			_g = new Bitmap(vct[1]);
@@ -42,9 +40,10 @@
 			vct = null;
 			addChildFunc();
 			getChildAt(1).blendMode = getChildAt(2).blendMode = BlendMode.MULTIPLY;
+			
 		}
 		
-		private function addChildFunc() : void 
+		protected function addChildFunc() : void 
 		{	
 			var ar:Array = [_r,_g,_b];
 			var len:uint = ar.length;
@@ -52,16 +51,8 @@
 			{
 				var targetNum:int = int(Math.random()*(len - i));
 				addChild(ar[targetNum]);
-				
-				ar[targetNum].x = basePosition.x;
-				ar[targetNum].y = basePosition.y;
-				
 				ar.splice(targetNum,1);
 			};
-			
-		//	ar[0].x = ar[1].x = ar[2].x = basePosition.x;
-		//	ar[0].y = ar[1].y = ar[2].y = basePosition.y;
-			
 			ar[0] = ar[1] = ar[2] = null;
 			ar=null;
 		}
@@ -103,21 +94,7 @@
 			vct = null;
 		}
 		
-		private function getBasePosition() : Point 
-		{
-			var bool:Boolean = RGBConstants.BASE_ALIGN=="";
-			var xx:Number = (bool)? -_bmd.width/2 : 0;
-			var yy:Number = (bool)? -_bmd.height/2 : 0;
-			return new Point(xx, yy);
-		}
-		
-		
-		final protected function get basePosition() : Point
-		{
-			return _basePosition;
-		}
 
-		
 		// getter
 		public function get r() : Bitmap
 		{

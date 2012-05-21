@@ -1,6 +1,5 @@
 ﻿package inn.nowri.ka.rgbeffect.core 
 {
-	import flash.display.StageAlign;
 
 	public class RGBConstants 
 	{
@@ -9,7 +8,7 @@
 		 * "":center_middle
 		 * "TL":top_left
 		 */
-		public static const BASE_ALIGN:String =StageAlign.TOP_LEFT;
+		public static const BASE_ALIGN:String ="";
 			
 		/**
 		 * ランダムな移動をする場合、元移動量からの最大増加倍率

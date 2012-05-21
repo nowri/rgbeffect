@@ -1,7 +1,7 @@
 ﻿package inn.nowri.ka.rgbeffect.type 
 {
+	import inn.nowri.ka.rgbeffect.core.RGBEvent;
 	import inn.nowri.ka.rgbeffect.core.IControlAnime;
-	import inn.nowri.ka.rgbeffect.core.RGBCommandConstants;
 	import inn.nowri.ka.rgbeffect.core.RGBControlObject;
 
 	import org.libspark.betweenas3.BetweenAS3;
@@ -10,7 +10,6 @@
 
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
-	import flash.events.Event;
 	
 	public class OneDirection extends RGBControlObject implements IControlAnime
 	{	
@@ -65,18 +64,18 @@
 			_isPlaying = true;
 			var obj1:Object = getTweenParamVct()[0];
 			var obj2:Object = getTweenParamVct()[1];
-			rtween = (!_isFillin)? BetweenAS3.tween(_r, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_r,obj1,obj2);
-			gtween = (!_isFillin)? BetweenAS3.tween(_g, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_g,obj1,obj2);
-			btween = (!_isFillin)? BetweenAS3.tween(_b, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_b,obj1,obj2);
-			gtween = BetweenAS3.delay(gtween, delay);
-			btween = BetweenAS3.delay(btween, delay*2);
-			tweeng = BetweenAS3.repeat( BetweenAS3.parallel(rtween, gtween, btween), count);
+			rTween = (!_isFillin)? BetweenAS3.tween(_r, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_r,obj1,obj2);
+			gTween = (!_isFillin)? BetweenAS3.tween(_g, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_g,obj1,obj2);
+			bTween = (!_isFillin)? BetweenAS3.tween(_b, obj2, obj1, time, Sine.easeOut) : renderAddedFillInPart(_b,obj1,obj2);
+			gTween = BetweenAS3.delay(gTween, delay);
+			bTween = BetweenAS3.delay(bTween, delay*2);
+			tweeng = BetweenAS3.repeat( BetweenAS3.parallel(rTween, gTween, bTween), count);
 			var self:Object = this;
 			tweeng.onComplete = function():void
 			{
 				_isPlaying = false;
 				if(isFlick)controlFlick(false);
-				dispatchEvent(new Event(RGBCommandConstants.PLAY_COMPLETE));
+				dispatchEvent(new RGBEvent(RGBEvent.PLAY_COMPLETE));
 			};
 			tweeng.play();
 			if(isFlick)controlFlick(true);
@@ -98,14 +97,14 @@
 			_isPlaying = false;
 			if(tweeng)tweeng.stop();
 			var __time:Number =(_time)? _time:time;
-			rtween = BetweenAS3.tween(_r, {x:basePosition.x, y:basePosition.y}, null, __time);
-			gtween = BetweenAS3.delay(BetweenAS3.tween(_g, {x:basePosition.x,y:basePosition.y}, null, __time), delay);
-			btween = BetweenAS3.delay(BetweenAS3.tween(_b, {x:basePosition.x,y:basePosition.y}, null, __time), delay*2);
+			rTween = BetweenAS3.tween(_r, {x:basePosition.x, y:basePosition.y}, null, __time);
+			gTween = BetweenAS3.delay(BetweenAS3.tween(_g, {x:basePosition.x,y:basePosition.y}, null, __time), delay);
+			bTween = BetweenAS3.delay(BetweenAS3.tween(_b, {x:basePosition.x,y:basePosition.y}, null, __time), delay*2);
 			tweeng  = BetweenAS3.parallel
 			(
-				rtween,
-				gtween,
-				btween
+				rTween,
+				gTween,
+				bTween
 			);
 			tweeng.play();
 			if(isFlick)controlFlick(false);

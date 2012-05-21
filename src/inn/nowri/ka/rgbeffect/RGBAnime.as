@@ -9,7 +9,8 @@
 	/**
 	 * RGBAnime Class 
 	 * 
-	 * @version 1.6
+	 * @version 2.0
+	 * @update  2012/05/21 ver.2.0 <code>FromEachEnd</code>追加、VO追加
 	 * @update  2012/05/09 ver.1.6
 	 * @update  2012/05/08 ver.1.5 パッケージ名変更
 	 * @update  2010/05/28 ver.1.11
